@@ -1,32 +1,20 @@
+// SPDX-License-Identifier: UNLICENSE
 pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
 
-// contract MyCOntract {
-//     constructor() {}
+/*
+custom metadata override
 
-//     uint256 numberOfNfts;
-
-//     function countUp(uint256 by) public returns (uint256) {
-//         require(by > 0);
-
-//         numberOfNfts += by;
-
-//         return numberOfNfts;
-//     }
-// }
-
-// custom metadata override
-
-// uint8 (1 byte) 0-255
-// uint16 (2 bytes) 0-65535
-// uint32 (4 bytes) 0-4294967295
-// uint64 (8 bytes) 0-18446744073709551615
-// uint128 (16 bytes) 0-340282366920938463463374607431768211455
-// uint256 (32 bytes) 0-115792089237316195423570985008687907853269984665640564039457584007913129639935
+uint8 (1 byte) 0-255
+uint16 (2 bytes) 0-65535
+uint32 (4 bytes) 0-4294967295
+uint64 (8 bytes) 0-18446744073709551615
+uint128 (16 bytes) 0-340282366920938463463374607431768211455
+uint256 (32 bytes) 0-115792089237316195423570985008687907853269984665640564039457584007913129639935
+*/
 
 // ERC20 - FUNGIBLE
-
 // ERC721 - NON-FUNGIBLE
 
 contract Counter {
