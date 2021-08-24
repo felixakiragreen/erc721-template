@@ -1,0 +1,34 @@
+# mac os
+.DS_Store
+
+# vscode
+.vscode/*
+*.code-workspace
+
+# node
+node_modules
+
+# vite
+dist
+dist-ssr
+*.local
+
+#svelte-kit
+.svelte-kit
+build
+functions
+
+# yarn
+yarn-error.log
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+
+# 
+.env
+
+# hardhat files
+cache
+/artifacts
+coverage
+coverage.json
