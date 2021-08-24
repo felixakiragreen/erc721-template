@@ -19,12 +19,14 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 
-interface MyNFTInterface extends ethers.utils.Interface {
+interface NiftyInterface extends ethers.utils.Interface {
   functions: {
     "approve(address,uint256)": FunctionFragment;
     "balanceOf(address)": FunctionFragment;
     "getApproved(uint256)": FunctionFragment;
     "isApprovedForAll(address,address)": FunctionFragment;
+    "mintMany(uint256)": FunctionFragment;
+    "mintOne()": FunctionFragment;
     "name()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
@@ -48,6 +50,11 @@ interface MyNFTInterface extends ethers.utils.Interface {
     functionFragment: "isApprovedForAll",
     values: [string, string]
   ): string;
+  encodeFunctionData(
+    functionFragment: "mintMany",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "mintOne", values?: undefined): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "ownerOf",
@@ -85,6 +92,8 @@ interface MyNFTInterface extends ethers.utils.Interface {
     functionFragment: "isApprovedForAll",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "mintMany", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "mintOne", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
   decodeFunctionResult(
@@ -117,7 +126,7 @@ interface MyNFTInterface extends ethers.utils.Interface {
   getEvent(nameOrSignatureOrTopic: "Transfer"): EventFragment;
 }
 
-export class MyNFT extends BaseContract {
+export class Nifty extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -158,7 +167,7 @@ export class MyNFT extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: MyNFTInterface;
+  interface: NiftyInterface;
 
   functions: {
     approve(
@@ -179,6 +188,15 @@ export class MyNFT extends BaseContract {
       operator: string,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    mintMany(
+      number: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    mintOne(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
 
     name(overrides?: CallOverrides): Promise<[string]>;
 
@@ -247,6 +265,15 @@ export class MyNFT extends BaseContract {
     overrides?: CallOverrides
   ): Promise<boolean>;
 
+  mintMany(
+    number: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  mintOne(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   name(overrides?: CallOverrides): Promise<string>;
 
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
@@ -307,6 +334,10 @@ export class MyNFT extends BaseContract {
       operator: string,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    mintMany(number: BigNumberish, overrides?: CallOverrides): Promise<void>;
+
+    mintOne(overrides?: CallOverrides): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -399,6 +430,15 @@ export class MyNFT extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    mintMany(
+      number: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    mintOne(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     ownerOf(
@@ -468,6 +508,15 @@ export class MyNFT extends BaseContract {
       owner: string,
       operator: string,
       overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    mintMany(
+      number: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    mintOne(
+      overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>;

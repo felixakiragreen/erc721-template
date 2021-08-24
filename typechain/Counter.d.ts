@@ -22,12 +22,15 @@ import { TypedEventFilter, TypedEvent, TypedListener } from "./commons";
 interface CounterInterface extends ethers.utils.Interface {
   functions: {
     "countDown()": FunctionFragment;
-    "countUp()": FunctionFragment;
+    "countUp(uint256)": FunctionFragment;
     "getCount()": FunctionFragment;
   };
 
   encodeFunctionData(functionFragment: "countDown", values?: undefined): string;
-  encodeFunctionData(functionFragment: "countUp", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "countUp",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "getCount", values?: undefined): string;
 
   decodeFunctionResult(functionFragment: "countDown", data: BytesLike): Result;
@@ -90,6 +93,7 @@ export class Counter extends BaseContract {
     ): Promise<ContractTransaction>;
 
     countUp(
+      by: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -101,6 +105,7 @@ export class Counter extends BaseContract {
   ): Promise<ContractTransaction>;
 
   countUp(
+    by: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -109,7 +114,7 @@ export class Counter extends BaseContract {
   callStatic: {
     countDown(overrides?: CallOverrides): Promise<BigNumber>;
 
-    countUp(overrides?: CallOverrides): Promise<BigNumber>;
+    countUp(by: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
 
     getCount(overrides?: CallOverrides): Promise<BigNumber>;
   };
@@ -126,6 +131,7 @@ export class Counter extends BaseContract {
     ): Promise<BigNumber>;
 
     countUp(
+      by: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -138,6 +144,7 @@ export class Counter extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     countUp(
+      by: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
