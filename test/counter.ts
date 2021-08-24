@@ -30,23 +30,17 @@ describe("Counter", () => {
   // 4
   describe("count up", async () => {
     it("should count up", async () => {
-      await counter.countUp()
+      await counter.countUp(1)
       let count = await counter.getCount()
-      expect(count).to.eq(2)
+      expect(count).to.eq(1)
     })
   })
 
   describe("count down", async () => {
     // 5
-    it("should fail due to underflow exception", () => {
-      return expect(counter.countDown()).to.eventually.be.rejectedWith(
-        Error,
-        "Uint256 underflow"
-      )
-    })
 
     it("should count down", async () => {
-      await counter.countUp()
+      await counter.countUp(1)
 
       await counter.countDown()
       const count = await counter.getCount()
