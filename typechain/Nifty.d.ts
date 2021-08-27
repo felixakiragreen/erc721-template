@@ -27,6 +27,7 @@ interface NiftyInterface extends ethers.utils.Interface {
     "isApprovedForAll(address,address)": FunctionFragment;
     "mintMany(uint256)": FunctionFragment;
     "mintOne()": FunctionFragment;
+    "mintPromo(uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
@@ -55,6 +56,10 @@ interface NiftyInterface extends ethers.utils.Interface {
     values: [BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "mintOne", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "mintPromo",
+    values: [BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "name", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "ownerOf",
@@ -94,6 +99,7 @@ interface NiftyInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "mintMany", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "mintOne", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "mintPromo", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
   decodeFunctionResult(
@@ -198,6 +204,11 @@ export class Nifty extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    mintPromo(
+      _promoCode: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     name(overrides?: CallOverrides): Promise<[string]>;
 
     ownerOf(
@@ -274,6 +285,11 @@ export class Nifty extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  mintPromo(
+    _promoCode: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   name(overrides?: CallOverrides): Promise<string>;
 
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
@@ -338,6 +354,11 @@ export class Nifty extends BaseContract {
     mintMany(number: BigNumberish, overrides?: CallOverrides): Promise<void>;
 
     mintOne(overrides?: CallOverrides): Promise<void>;
+
+    mintPromo(
+      _promoCode: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     name(overrides?: CallOverrides): Promise<string>;
 
@@ -439,6 +460,11 @@ export class Nifty extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    mintPromo(
+      _promoCode: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     name(overrides?: CallOverrides): Promise<BigNumber>;
 
     ownerOf(
@@ -516,6 +542,11 @@ export class Nifty extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     mintOne(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    mintPromo(
+      _promoCode: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
