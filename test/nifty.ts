@@ -10,14 +10,16 @@ const { expect } = chai
 describe("Nifty", () => {
   let contract: Nifty
   let deployer: SignerWithAddress
+  let other1: SignerWithAddress
 
   beforeEach(async () => {
     // 1 - getting the wallet addresses for testing
     const signers = await ethers.getSigners()
 
-    const [dep, other1, other2, ...others] = signers
+    const [d, o1, other2, ...others] = signers
 
-    deployer = dep
+    deployer = d
+    other1 = o1
 
     // 2
     const contractFactory = (await ethers.getContractFactory(
@@ -74,9 +76,49 @@ describe("Nifty", () => {
     })
   })
 
-  describe("promo minting", async () => {
-    // 1. make sure checking promocode
-    // 2. make sure reverting promo limit
-    // 3. make sure promo uses is incrementing
+  describe("payments", async () => {
+    //
+
+    it("should SUCCESSFULLY mint when the full amount is paid for 1", async () => {
+      const balanceBefore = await contract.balanceOf(deployer.address)
+      // const totalSupply = await contract.totalSupply()
+
+      console.log("balanceBefore", balanceBefore)
+
+      await contract.payToMint(1, {
+        value: ethers.utils.parseEther("0.01"),
+      })
+
+      const balanceAfter = await contract.balanceOf(deployer.address)
+      console.log("balanceAfter", balanceAfter)
+
+      expect(balanceAfter.toNumber()).to.eq(balanceBefore.toNumber() + 1)
+    })
+
+    it("should FAIL to mint when the full amount is not paid", async () => {
+      await expect(
+        contract.payToMint(1, {
+          value: ethers.utils.parseEther("0.001"),
+        })
+      ).to.be.revertedWith("Not enough ETH")
+
+      await expect(contract.payToMint(1)).to.be.revertedWith("Not enough ETH")
+    })
+
+    it("should SUCCESSFULLY mint when the full amount is paid for 10", async () => {
+      const balanceBefore = await contract.balanceOf(deployer.address)
+      // const totalSupply = await contract.totalSupply()
+
+      console.log("balanceBefore", balanceBefore)
+
+      await contract.payToMint(10, {
+        value: ethers.utils.parseEther("0.1"),
+      })
+
+      const balanceAfter = await contract.balanceOf(deployer.address)
+      console.log("balanceAfter", balanceAfter)
+
+      expect(balanceAfter.toNumber()).to.eq(balanceBefore.toNumber() + 10)
+    })
   })
 })
