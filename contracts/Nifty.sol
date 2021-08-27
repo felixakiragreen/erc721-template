@@ -11,8 +11,16 @@ contract Nifty is ERC721 {
     uint256 idTracker;
     uint256 maxNumber = 1000;
     uint256 promoCode = 69420;
-    uint256 promoUses;
+    uint256 public promoUses;
     uint256 promoLimit = 10;
+    uint256 price = 0.01 ether;
+
+    function internalMint(address to) internal {
+        require(idTracker + 1 < maxNumber, "Max number reached.");
+
+        _safeMint(to, idTracker);
+        idTracker++;
+    }
 
     function mintOne() public {
         internalMint(msg.sender);
@@ -35,10 +43,11 @@ contract Nifty is ERC721 {
         internalMint(msg.sender);
     }
 
-    function internalMint(address to) internal {
-        require(idTracker + 1 < maxNumber, "Max number reached.");
+    function payToMint(uint256 numberToMint) public payable {
+        // 1. make sure you paid enough
+        require(msg.value >= price * numberToMint, "Not enough ETH");
 
-        _safeMint(to, idTracker);
-        idTracker++;
+        // 2. do the mints
+        mintMany(numberToMint);
     }
 }
