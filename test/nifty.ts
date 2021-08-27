@@ -24,7 +24,7 @@ describe("Nifty", () => {
       "Nifty",
       deployer
     )) as Nifty__factory
-    contract = await contractFactory.deploy()
+    contract = await contractFactory.deploy(0)
     await contract.deployed()
 
     // 3
@@ -57,5 +57,26 @@ describe("Nifty", () => {
 
       expect(balance1).to.eq(2)
     })
+
+    it("shouldn't more than max number", async () => {
+      // await contract.mintMany(11)
+
+      const contractFactory = (await ethers.getContractFactory(
+        "Nifty",
+        deployer
+      )) as Nifty__factory
+      const contract990 = await contractFactory.deploy(990)
+      await contract990.deployed()
+
+      await expect(contract990.mintMany(11)).to.be.revertedWith(
+        "Max number reached."
+      )
+    })
+  })
+
+  describe("promo minting", async () => {
+    // 1. make sure checking promocode
+    // 2. make sure reverting promo limit
+    // 3. make sure promo uses is incrementing
   })
 })
