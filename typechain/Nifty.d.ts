@@ -12,6 +12,7 @@ import {
   BaseContract,
   ContractTransaction,
   Overrides,
+  PayableOverrides,
   CallOverrides,
 } from "ethers";
 import { BytesLike } from "@ethersproject/bytes";
@@ -30,6 +31,8 @@ interface NiftyInterface extends ethers.utils.Interface {
     "mintPromo(uint256)": FunctionFragment;
     "name()": FunctionFragment;
     "ownerOf(uint256)": FunctionFragment;
+    "payToMint(uint256)": FunctionFragment;
+    "promoUses()": FunctionFragment;
     "safeTransferFrom(address,address,uint256)": FunctionFragment;
     "setApprovalForAll(address,bool)": FunctionFragment;
     "supportsInterface(bytes4)": FunctionFragment;
@@ -65,6 +68,11 @@ interface NiftyInterface extends ethers.utils.Interface {
     functionFragment: "ownerOf",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "payToMint",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(functionFragment: "promoUses", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "safeTransferFrom",
     values: [string, string, BigNumberish]
@@ -102,6 +110,8 @@ interface NiftyInterface extends ethers.utils.Interface {
   decodeFunctionResult(functionFragment: "mintPromo", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "ownerOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "payToMint", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "promoUses", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "safeTransferFrom",
     data: BytesLike
@@ -216,6 +226,13 @@ export class Nifty extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
+    payToMint(
+      numberToMint: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    promoUses(overrides?: CallOverrides): Promise<[BigNumber]>;
+
     "safeTransferFrom(address,address,uint256)"(
       from: string,
       to: string,
@@ -294,6 +311,13 @@ export class Nifty extends BaseContract {
 
   ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
 
+  payToMint(
+    numberToMint: BigNumberish,
+    overrides?: PayableOverrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  promoUses(overrides?: CallOverrides): Promise<BigNumber>;
+
   "safeTransferFrom(address,address,uint256)"(
     from: string,
     to: string,
@@ -363,6 +387,13 @@ export class Nifty extends BaseContract {
     name(overrides?: CallOverrides): Promise<string>;
 
     ownerOf(tokenId: BigNumberish, overrides?: CallOverrides): Promise<string>;
+
+    payToMint(
+      numberToMint: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    promoUses(overrides?: CallOverrides): Promise<BigNumber>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
@@ -472,6 +503,13 @@ export class Nifty extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    payToMint(
+      numberToMint: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    promoUses(overrides?: CallOverrides): Promise<BigNumber>;
+
     "safeTransferFrom(address,address,uint256)"(
       from: string,
       to: string,
@@ -556,6 +594,13 @@ export class Nifty extends BaseContract {
       tokenId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
+
+    payToMint(
+      numberToMint: BigNumberish,
+      overrides?: PayableOverrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    promoUses(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     "safeTransferFrom(address,address,uint256)"(
       from: string,
