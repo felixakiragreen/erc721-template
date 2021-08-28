@@ -7,6 +7,8 @@ import "@nomiclabs/hardhat-waffle"
 import "@typechain/hardhat"
 import "@nomiclabs/hardhat-etherscan"
 import "solidity-coverage"
+import "hardhat-gas-reporter"
+import "hardhat-contract-sizer"
 
 const INFURA_API_KEY = process.env.INFURA_API_KEY || ""
 const RINKEBY_PRIVATE_KEY =
@@ -34,6 +36,11 @@ const config: HardhatUserConfig = {
     // Your API key for Etherscan
     // Obtain one at https://etherscan.io/
     apiKey: ETHERSCAN_API_KEY,
+  },
+  contractSizer: {
+    alphaSort: true,
+    runOnCompile: true,
+    disambiguatePaths: false,
   },
 }
 
