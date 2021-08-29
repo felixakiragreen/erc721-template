@@ -22,7 +22,11 @@ const config: HardhatUserConfig = {
     compilers: [{ version: "0.8.6", settings: {} }],
   },
   networks: {
-    hardhat: {},
+    hardhat: {
+      // this is because of Metamask
+      // https://hardhat.org/metamask-issue.html
+      chainId: 1337,
+    },
     localhost: {},
     rinkeby: {
       url: `https://rinkeby.infura.io/v3/${INFURA_API_KEY}`,
